@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { FaGithubAlt, FaPlus, FaSpinner } from 'react-icons/fa';
+import {
+  FaGithubAlt,
+  FaSearch,
+  FaSpinner,
+  FaRegBookmark,
+  FaBookmark,
+} from 'react-icons/fa';
 import { GoRepoForked, GoStar } from 'react-icons/go';
 
 import api from '../../services/api';
@@ -14,6 +20,8 @@ import {
   Notifications,
   Notification,
   Badge,
+  Button,
+  Favorite,
 } from './styles';
 
 interface RepositoryProps {
@@ -22,18 +30,35 @@ interface RepositoryProps {
   description: string;
   forks: number;
   stars: number;
+  favorite: boolean;
 }
 
 export default function Main() {
   const [username, setUsername] = useState('');
   const [repositories, setRepositories] = useState<RepositoryProps[]>([]);
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+
+  const [favoriteRepos, setFavoriteRepos] = useState<RepositoryProps[]>([]);
 
   function handleInputChange(e) {
     setUsername(e.target.value);
     setError(false);
+  }
+
+  function handleToggleFavorite(repoId) {
+    const updatedRepositories = repositories.map((repo) => {
+      if (repo.id === repoId) {
+        return {
+          ...repo,
+          favorite: !repo.favorite,
+        };
+      }
+
+      return repo;
+    });
+
+    setRepositories(updatedRepositories);
   }
 
   async function handleSubmit(e) {
@@ -51,6 +76,7 @@ export default function Main() {
           description: repo.description,
           forks: repo.forks_count,
           stars: repo.stargazers_count,
+          favorite: false,
         };
       });
 
@@ -85,7 +111,7 @@ export default function Main() {
           {loading ? (
             <FaSpinner color="#fff" size={14} />
           ) : (
-            <FaPlus color="#fff" size={14} />
+            <FaSearch color="#fff" size={14} />
           )}
         </SubmitButton>
       </Form>
@@ -95,7 +121,15 @@ export default function Main() {
           <li key={repository.id}>
             <Content>
               <CardInfo>
-                <span>{repository.title}</span>
+                <Favorite>
+                  <Button
+                    type="button"
+                    onClick={() => handleToggleFavorite(repository.id)}
+                  >
+                    {repository.favorite ? <FaBookmark /> : <FaRegBookmark />}
+                  </Button>
+                  <span>{repository.title}</span>
+                </Favorite>
 
                 <Notifications>
                   <Notification>
