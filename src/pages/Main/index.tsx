@@ -1,15 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import {
-  FaGithubAlt,
-  FaSearch,
-  FaSpinner,
-  FaRegBookmark,
-  FaBookmark,
-} from 'react-icons/fa';
+import { FaSearch, FaSpinner, FaRegBookmark, FaBookmark } from 'react-icons/fa';
 import { GoRepoForked, GoStar } from 'react-icons/go';
 
-import api from '../../services/api';
-import Container from '../../components/Container';
 import {
   Form,
   SubmitButton,
@@ -22,6 +14,10 @@ import {
   Button,
   Favorite,
 } from './styles';
+
+import api from '../../services/api';
+import Container from '../../components/Container';
+import Header from '../../components/Header';
 
 interface RepositoryProps {
   id: number;
@@ -94,10 +90,7 @@ export default function Main() {
 
   return (
     <Container>
-      <h1>
-        <FaGithubAlt />
-        Repositories
-      </h1>
+      <Header />
 
       <Form onSubmit={handleSubmit} error={error}>
         <input
