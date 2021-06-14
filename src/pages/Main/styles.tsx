@@ -93,50 +93,41 @@ export const List = styled.ul`
   }
 `;
 
-export const Content = styled.div`
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  flex-direction: column;
-  width: 100%;
-  height: 64px;
-`;
-
-export const Description = styled.div`
-  border-radius: 5px;
-  padding: 8px 0;
-  width: 100%;
-`;
-
 export const CardInfo = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   width: 100%;
+  margin-bottom: 8px;
+`;
 
-  span {
-    color: ${colors.hc_black};
-    font-size: 16px;
-    font-weight: bold;
-  }
+export const Content = styled.div`
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  margin-right: 16px;
+`;
+
+export const Description = styled.p`
+  padding-top: 8px;
+  padding-bottom: 8px;
 `;
 
 export const Notifications = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
+  font-weight: bold;
+  font-size: 16px;
 `;
 
-export const Notification = styled.span`
-  position: relative;
-  display: inline-block;
-`;
+export const Notification = styled.div`
+  display: flex;
+  align-items: center;
 
-export const Badge = styled.span`
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  padding: 5px 10px;
+  svg {
+    margin: 2px;
+  }
 `;
 
 export const Button = styled.button.attrs((props) => ({
@@ -145,7 +136,7 @@ export const Button = styled.button.attrs((props) => ({
 }))`
   background: none;
   border: none;
-  margin-right: 5px;
+  margin-right: 2px;
 
   svg {
     margin: 0;
@@ -158,7 +149,10 @@ export const Button = styled.button.attrs((props) => ({
 `;
 
 export const Favorite = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  span {
+    color: ${colors.hc_black};
+    font-size: 18px;
+    font-weight: bold;
+    margin-left: 8px;
+  }
 `;

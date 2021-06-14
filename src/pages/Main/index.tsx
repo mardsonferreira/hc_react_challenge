@@ -19,7 +19,6 @@ import {
   CardInfo,
   Notifications,
   Notification,
-  Badge,
   Button,
   Favorite,
 } from './styles';
@@ -119,8 +118,8 @@ export default function Main() {
       <List>
         {repositories.map((repository) => (
           <li key={repository.id}>
-            <Content>
-              <CardInfo>
+            <CardInfo>
+              <Content>
                 <Favorite>
                   <Button
                     type="button"
@@ -131,26 +130,27 @@ export default function Main() {
                   <span>{repository.title}</span>
                 </Favorite>
 
-                <Notifications>
-                  <Notification>
-                    <GoStar />
-                    <Badge>{repository.stars}</Badge>
-                  </Notification>
+                {repository.description ? (
+                  <Description>
+                    <span>{repository.description}</span>
+                  </Description>
+                ) : (
+                  ''
+                )}
+              </Content>
 
-                  <Notification>
-                    <GoRepoForked />
-                    <Badge>{repository.forks}</Badge>
-                  </Notification>
-                </Notifications>
-              </CardInfo>
-              {repository.description ? (
-                <Description>
-                  <span>{repository.description}</span>
-                </Description>
-              ) : (
-                ''
-              )}
-            </Content>
+              <Notifications>
+                <Notification>
+                  <GoStar />
+                  <span>{repository.stars}</span>
+                </Notification>
+
+                <Notification>
+                  <GoRepoForked />
+                  <span>{repository.forks}</span>
+                </Notification>
+              </Notifications>
+            </CardInfo>
           </li>
         ))}
       </List>
