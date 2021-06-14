@@ -19,6 +19,8 @@ import api from '../../services/api';
 import Container from '../../components/Container';
 import Header from '../../components/Header';
 
+import { useRepos } from '../../context/repoContext';
+
 interface RepositoryProps {
   id: number;
   title: string;
@@ -29,12 +31,12 @@ interface RepositoryProps {
 }
 
 export default function Main() {
+  const { updateTotalRepos } = useRepos();
+
   const [username, setUsername] = useState('');
   const [repositories, setRepositories] = useState<RepositoryProps[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-
-  const [favoriteRepos, setFavoriteRepos] = useState<RepositoryProps[]>([]);
 
   function handleInputChange(e) {
     setUsername(e.target.value);
@@ -81,6 +83,8 @@ export default function Main() {
       setRepositories(repos);
 
       setUsername('');
+
+      updateTotalRepos(repos.length);
     } catch (err) {
       console.log(err);
       setLoading(false);

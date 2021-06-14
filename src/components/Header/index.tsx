@@ -4,7 +4,11 @@ import { RiGitRepositoryFill } from 'react-icons/ri';
 
 import { Container, Info } from './styles';
 
+import { useRepos } from '../../context/repoContext';
+
 export default function Header() {
+  const { totalRepos } = useRepos();
+
   return (
     <Container>
       <h1>
@@ -14,7 +18,7 @@ export default function Header() {
 
       <Info>
         <RiGitRepositoryFill />
-        <span>10</span>
+        <span>{totalRepos}</span>
 
         <FaBookmark />
         <span>10</span>
