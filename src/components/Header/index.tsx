@@ -7,7 +7,7 @@ import { Container, Info } from './styles';
 import { useRepos } from '../../context/repoContext';
 
 export default function Header() {
-  const { totalRepos } = useRepos();
+  const { totalRepos, favoriteRepos } = useRepos();
 
   return (
     <Container>
@@ -21,7 +21,7 @@ export default function Header() {
         <span>{totalRepos}</span>
 
         <FaBookmark />
-        <span>10</span>
+        <span>{favoriteRepos.length}</span>
       </Info>
     </Container>
   );

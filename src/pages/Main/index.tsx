@@ -21,17 +21,17 @@ import Header from '../../components/Header';
 
 import { useRepos } from '../../context/repoContext';
 
-interface RepositoryProps {
+type RepositoryProps = {
   id: number;
   title: string;
   description: string;
   forks: number;
   stars: number;
   favorite: boolean;
-}
+};
 
 export default function Main() {
-  const { updateTotalRepos } = useRepos();
+  const { updateTotalRepos, addToFavorites, removeFromFavorites } = useRepos();
 
   const [username, setUsername] = useState('');
   const [repositories, setRepositories] = useState<RepositoryProps[]>([]);
@@ -43,19 +43,27 @@ export default function Main() {
     setError(false);
   }
 
-  function handleToggleFavorite(repoId) {
-    const updatedRepositories = repositories.map((repo) => {
-      if (repo.id === repoId) {
-        return {
-          ...repo,
-          favorite: !repo.favorite,
-        };
-      }
-
-      return repo;
+  function handleToggleFavorite(repository: RepositoryProps) {
+    const index = repositories.findIndex((repo) => {
+      return repo.id === repository.id;
     });
 
-    setRepositories(updatedRepositories);
+    if (index !== -1) {
+      const newRepos = [...repositories];
+
+      newRepos[index] = {
+        ...repository,
+        favorite: !repository.favorite,
+      };
+
+      setRepositories(newRepos);
+
+      if (!repository.favorite) {
+        addToFavorites(newRepos[index]);
+      } else {
+        removeFromFavorites(newRepos[index].id);
+      }
+    }
   }
 
   async function handleSubmit(e) {
@@ -120,7 +128,7 @@ export default function Main() {
                 <Favorite>
                   <Button
                     type="button"
-                    onClick={() => handleToggleFavorite(repository.id)}
+                    onClick={() => handleToggleFavorite(repository)}
                   >
                     {repository.favorite ? <FaBookmark /> : <FaRegBookmark />}
                   </Button>
