@@ -1,13 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaGithubAlt, FaBookmark } from 'react-icons/fa';
 import { RiGitRepositoryFill } from 'react-icons/ri';
+import { MdDelete } from 'react-icons/md';
 
-import { Container, Info } from './styles';
+import { Container, Info, Delete } from './styles';
+import { List, CardInfo, Content, Description } from '../List';
 
 import { useRepos } from '../../context/repoContext';
+import Modal from '../Modal';
 
 export default function Header() {
-  const { totalRepos, favoriteRepos } = useRepos();
+  const { totalRepos, favoriteRepos, removeFromFavorites } = useRepos();
+
+  const [showModal, setShowModal] = useState(false);
+
+  function displayFavoritesRepos() {
+    setShowModal(!showModal);
+  }
+
+  function closeModal() {
+    setShowModal(!showModal);
+  }
 
   return (
     <Container>
@@ -20,9 +33,36 @@ export default function Header() {
         <RiGitRepositoryFill />
         <span>{totalRepos}</span>
 
-        <FaBookmark />
+        <FaBookmark onClick={displayFavoritesRepos} />
         <span>{favoriteRepos.length}</span>
       </Info>
+      <Modal show={showModal} close={closeModal}>
+        <List>
+          {favoriteRepos.map((repository) => (
+            <li key={repository.id}>
+              <CardInfo>
+                <Content>
+                  <h2>{repository.title}</h2>
+                  {repository.description ? (
+                    <Description>
+                      <span>{repository.description}</span>
+                    </Description>
+                  ) : (
+                    ''
+                  )}
+                </Content>
+
+                <Delete>
+                  <MdDelete
+                    size={20}
+                    onClick={() => removeFromFavorites(repository.id)}
+                  />
+                </Delete>
+              </CardInfo>
+            </li>
+          ))}
+        </List>
+      </Modal>
     </Container>
   );
 }

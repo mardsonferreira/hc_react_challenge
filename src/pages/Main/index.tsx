@@ -5,18 +5,15 @@ import { GoRepoForked, GoStar } from 'react-icons/go';
 import {
   Form,
   SubmitButton,
-  List,
-  Content,
-  Description,
-  CardInfo,
   Notifications,
   Notification,
-  Button,
   Favorite,
 } from './styles';
+import { List, CardInfo, Content, Description } from '../../components/List';
 
 import api from '../../services/api';
 import Container from '../../components/Container';
+import Button from '../../components/Button';
 import Header from '../../components/Header';
 
 import { useRepos } from '../../context/repoContext';
