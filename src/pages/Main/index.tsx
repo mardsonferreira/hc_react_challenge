@@ -28,39 +28,15 @@ type RepositoryProps = {
 };
 
 export default function Main() {
-  const { updateTotalRepos, addToFavorites, removeFromFavorites } = useRepos();
+  const { repositories, updateFavorites, loadRepositories } = useRepos();
 
   const [username, setUsername] = useState('');
-  const [repositories, setRepositories] = useState<RepositoryProps[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
   function handleInputChange(e) {
     setUsername(e.target.value);
     setError(false);
-  }
-
-  function handleToggleFavorite(repository: RepositoryProps) {
-    const index = repositories.findIndex((repo) => {
-      return repo.id === repository.id;
-    });
-
-    if (index !== -1) {
-      const newRepos = [...repositories];
-
-      newRepos[index] = {
-        ...repository,
-        favorite: !repository.favorite,
-      };
-
-      setRepositories(newRepos);
-
-      if (!repository.favorite) {
-        addToFavorites(newRepos[index]);
-      } else {
-        removeFromFavorites(newRepos[index].id);
-      }
-    }
   }
 
   async function handleSubmit(e) {
@@ -85,16 +61,18 @@ export default function Main() {
       setLoading(false);
       setError(false);
 
-      setRepositories(repos);
+      loadRepositories(repos);
 
       setUsername('');
-
-      updateTotalRepos(repos.length);
     } catch (err) {
       console.log(err);
       setLoading(false);
       setError(false);
     }
+  }
+
+  function handleToggleFavorite(repository: RepositoryProps) {
+    updateFavorites(repository);
   }
 
   return (

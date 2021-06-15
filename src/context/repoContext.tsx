@@ -11,10 +11,10 @@ type Repository = {
 
 type RepoContextData = {
   totalRepos: number;
+  repositories: Repository[];
   favoriteRepos: Repository[];
-  updateTotalRepos: (total: number) => void;
-  addToFavorites: (repository: Repository) => void;
-  removeFromFavorites: (repoId: number) => void;
+  updateFavorites: (repository: Repository) => void;
+  loadRepositories: (repositories: Repository[]) => void;
 };
 
 type RepoContextProviderProps = {
@@ -25,38 +25,48 @@ export const RepoContext = createContext({} as RepoContextData);
 
 export function RepoContextProvider({ children }: RepoContextProviderProps) {
   const [totalRepos, setTotalRepos] = useState(0);
+  const [repositories, setRepositories] = useState<Repository[]>([]);
   const [favoriteRepos, setFavoriteRepos] = useState<Repository[]>([]);
 
-  function updateTotalRepos(total: number) {
-    setTotalRepos(total);
+  function loadRepositories(repos: Repository[]) {
+    setRepositories(repos);
+    setTotalRepos(repos.length);
   }
 
-  function addToFavorites(repository: Repository) {
-    const index = favoriteRepos.findIndex((repo) => {
+  function updateFavorites(repository: Repository) {
+    const index = repositories.findIndex((repo) => {
       return repo.id === repository.id;
     });
 
-    if (index === -1) {
-      setFavoriteRepos((oldRepos) => [...oldRepos, repository]);
+    const newRepos = [...repositories];
+
+    if (index !== -1) {
+      newRepos[index] = {
+        ...repository,
+        favorite: !repository.favorite,
+      };
+
+      setRepositories(newRepos);
     }
-  }
 
-  function removeFromFavorites(repoId: number) {
-    const newFavoritesRepos = favoriteRepos.filter(
-      (repo) => repo.id !== repoId
-    );
-
-    setFavoriteRepos(newFavoritesRepos);
+    if (!repository.favorite) {
+      setFavoriteRepos((oldRepos) => [...oldRepos, newRepos[index]]);
+    } else {
+      const newFavorites = favoriteRepos.filter(
+        (repo) => repo.id !== repository.id
+      );
+      setFavoriteRepos(newFavorites);
+    }
   }
 
   return (
     <RepoContext.Provider
       value={{
         totalRepos,
+        repositories,
         favoriteRepos,
-        updateTotalRepos,
-        addToFavorites,
-        removeFromFavorites,
+        loadRepositories,
+        updateFavorites,
       }}
     >
       {children}

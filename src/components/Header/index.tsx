@@ -10,7 +10,7 @@ import { useRepos } from '../../context/repoContext';
 import Modal from '../Modal';
 
 export default function Header() {
-  const { totalRepos, favoriteRepos, removeFromFavorites } = useRepos();
+  const { totalRepos, favoriteRepos, updateFavorites } = useRepos();
 
   const [showModal, setShowModal] = useState(false);
 
@@ -55,7 +55,7 @@ export default function Header() {
                 <Delete>
                   <MdDelete
                     size={20}
-                    onClick={() => removeFromFavorites(repository.id)}
+                    onClick={() => updateFavorites(repository)}
                   />
                 </Delete>
               </CardInfo>
