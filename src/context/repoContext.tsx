@@ -1,25 +1,6 @@
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import React, { createContext, useState, useContext } from 'react';
 
-type Repository = {
-  id: number;
-  title: string;
-  description: string;
-  forks: number;
-  stars: number;
-  favorite: boolean;
-};
-
-type RepoContextData = {
-  totalRepos: number;
-  repositories: Repository[];
-  favoriteRepos: Repository[];
-  updateFavorites: (repository: Repository) => void;
-  loadRepositories: (repositories: Repository[]) => void;
-};
-
-type RepoContextProviderProps = {
-  children: ReactNode;
-};
+import { Repository, RepoContextData, RepoContextProviderProps } from './types';
 
 export const RepoContext = createContext({} as RepoContextData);
 

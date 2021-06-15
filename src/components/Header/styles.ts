@@ -52,3 +52,20 @@ export const Favorite = styled.div`
 export const Delete = styled.span`
   cursor: pointer;
 `;
+
+export const Emoji = styled.div`
+  font-size: 32px;
+`;
+
+export const Empty = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+
+  span {
+    font-size: 18px;
+    font-weight: bold;
+  }
+`;
